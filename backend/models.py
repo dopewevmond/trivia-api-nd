@@ -3,8 +3,8 @@ from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-database_name = 'trivia'
-database_path = 'postgres://{}/{}'.format('localhost:5432', database_name)
+database_name = "trivia"
+database_path ="postgres://{}:{}@{}/{}".format('student', 'student','localhost:5432', database_name)
 
 db = SQLAlchemy()
 
@@ -57,6 +57,11 @@ class Question(db.Model):
             'category': self.category,
             'difficulty': self.difficulty
             }
+    
+    @classmethod
+    def search(cls, query):
+        q = f'%{query}%'
+        return cls.query.filter(cls.question.ilike(q))
 
 """
 Category
